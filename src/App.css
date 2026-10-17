@@ -39,3 +39,40 @@
 .list li button {
   margin-left: 12px;
 }
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.filters select,
+.filters input {
+  padding: 8px;
+  font-size: 0.95rem;
+}
+
+.summary {
+  margin-bottom: 20px;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 90px;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.bar-track {
+  background: #333;
+  border-radius: 4px;
+  height: 12px;
+}
+
+.bar {
+  background: #8b5cf6;
+  height: 100%;
+  border-radius: 4px;
+}
