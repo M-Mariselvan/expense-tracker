@@ -4,14 +4,38 @@ import "./App.css";
 const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Other"];
 
 function App() {
-    const [expenses, setExpenses] = useState(() => {
-    const saved = localStorage.getItem("expenses");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const API = "http://localhost:5000/api/expenses";
+
+  const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-  }, [expenses]);
+    fetch(API)
+      .then((res) => res.json())
+      .then((data) => setExpenses(data))
+      .catch((err) => console.error("Could not load expenses:", err));
+  }, []);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!title.trim() || !amount || !date) return;
+
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title.trim(), amount, category, date }),
+    });
+    if (!res.ok) return;
+
+    const saved = await res.json();
+    setExpenses([saved, ...expenses]);
+    setTitle("");
+    setAmount("");
+    setDate("");
+  }
+
+  async function handleDelete(id) {
+    await fetch(`${API}/${id}`, { method: "DELETE" });
+    setExpenses(expenses.filter((expense) => expense.id !== id));
+  }
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
@@ -20,28 +44,6 @@ function App() {
   const [filterCategory, setFilterCategory] = useState("All");
   const [filterMonth, setFilterMonth] = useState("");
   const [sortBy, setSortBy] = useState("date-desc");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!title.trim() || !amount || !date) return;
-
-    const newExpense = {
-      id: Date.now(),
-      title: title.trim(),
-      amount: Number(amount),
-      category,
-      date,
-    };
-
-    setExpenses([newExpense, ...expenses]);
-    setTitle("");
-    setAmount("");
-    setDate("");
-  }
-
-  function handleDelete(id) {
-    setExpenses(expenses.filter((expense) => expense.id !== id));
-  }
 
   const visible = expenses
     .filter(
