@@ -43,7 +43,7 @@ expense-tracker-client/
 ### Prerequisites
 
 - Node.js 20.6 or newer (the server uses the built-in `--env-file` flag)
-- A free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
+- A free [MongoDB Atlas] (https://www.mongodb.com/atlas) cluster
 - Git
 
 ### 1. Clone the repository
