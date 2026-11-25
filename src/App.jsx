@@ -9,10 +9,13 @@ function App() {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
-    fetch(API)
-      .then((res) => res.json())
-      .then((data) => setExpenses(data))
-      .catch((err) => console.error("Could not load expenses:", err));
+  fetch(API)
+    .then((res) => {
+      if (!res.ok) throw new Error("Server error");
+      return res.json();
+    })
+    .then((data) => setExpenses(Array.isArray(data) ? data : []))
+    .catch((err) => console.error("Could not load expenses:", err));
   }, []);
   async function handleSubmit(e) {
     e.preventDefault();
